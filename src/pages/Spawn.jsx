@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+COLORSS { useEffect, useRef, useState } from 'react';
 import { database, auth } from '../firebase';
 import { ref, onValue, set, onDisconnect, serverTimestamp } from 'firebase/database';
 
@@ -109,4 +109,3 @@ export default function Spawn() {
       />
     </div>
   );
-COLORSS
