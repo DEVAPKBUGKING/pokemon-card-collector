@@ -1,4 +1,4 @@
-COLORSS { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { database, auth } from '../firebase';
 import { ref, onValue, set, onDisconnect, serverTimestamp } from 'firebase/database';
 
@@ -12,7 +12,6 @@ export default function Spawn() {
   const canvasRef = useRef(null);
   const userId = auth.currentUser?.uid;
 
-  // Sinkron posisi ke Firebase pas tap
   useEffect(() => {
     if (!userId) return;
     const userRef = ref(database, `players/${userId}`);
@@ -40,7 +39,6 @@ export default function Spawn() {
     };
   }, [userId, color, name]);
 
-  // Ambil data semua pemain
   useEffect(() => {
     const playersRef = ref(database, 'players');
     const unsub = onValue(playersRef, (snap) => {
@@ -49,7 +47,6 @@ export default function Spawn() {
     return () => unsub();
   }, []);
 
-  // Gambar semua pemain di canvas
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -68,7 +65,6 @@ export default function Spawn() {
         ctx.font = 'bold 12px Segoe UI';
         ctx.textAlign = 'center';
         ctx.fillText(data.name || '?', data.x, data.y - 22);
-        // Badge "Kamu" kalo id sendiri
         if (id === userId) {
           ctx.fillStyle = '#ffd166';
           ctx.font = '10px Segoe UI';
@@ -83,7 +79,6 @@ export default function Spawn() {
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-      {/* Panel kustomisasi kecil */}
       <div style={{ background: 'rgba(0,0,0,0.6)', padding: '10px', display: 'flex', flexWrap: 'wrap', gap: 10, alignItems: 'center' }}>
         <input
           value={name}
@@ -100,7 +95,6 @@ export default function Spawn() {
         </select>
         <span style={{ color: '#aaa', fontSize: 12 }}>Tap di layar buat gerak</span>
       </div>
-
       <canvas
         ref={canvasRef}
         width={window.innerWidth}
@@ -109,3 +103,4 @@ export default function Spawn() {
       />
     </div>
   );
+}
